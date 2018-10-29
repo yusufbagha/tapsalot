@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-// import { Meteor } from 'meteor/meteor'
 import { Accounts } from 'meteor/accounts-base'
-// import { Header } from './header/Header';
-// import { Taps } from './taps/Taps';
-import { Leaderboard } from './leaderboard/Leaderboard';
+import Header from './header/Header';
+import Taps from './taps/Taps';
+import Leaderboard from './leaderboard/Leaderboard';
 import './Home.scss';
 
 export default class Home extends Component {
@@ -47,16 +46,15 @@ export default class Home extends Component {
     }
   }
 
-  // home-wrapper Triggers tap() When Clicked
   render() {
     return (
+      //  home-wrapper Triggers tap() When Clicked
       <div className="home-wrapper" onClick={() => this.tap()}>
         <div className="home-container">
-          {/* <Header /> */}
+          <Header />
           <div className="home-content-wrapper">
             <div className="home-content-container">
-              {/* <Taps /> */}
-              <Leaderboard />
+              <Taps />
             </div>
           </div>
         </div>

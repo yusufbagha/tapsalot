@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import './Leaderboard.scss';
+import './Leaderboard.scss';
 
 // Leaderboard Component Is Empty
 

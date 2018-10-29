@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-// import Contributions from './contributions/Contributions';
-// import UsersOnline from './usersOnline/UsersOnline';
+import Contributions from './contributions/Contributions';
+import UsersOnline from './usersOnline/UsersOnline';
 import './Header.scss';
 
 export default class Header extends Component {
@@ -8,8 +8,8 @@ export default class Header extends Component {
     return (
       <div className="header-wrapper">
         <div className="header-container">
-          {/* <Contributions /> */}
-          {/* <UsersOnline /> */}
+          <Contributions />
+          <UsersOnline />
         </div>
       </div>
     );

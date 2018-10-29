@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor'
-// import TapCounter from './tapCounter/TapCounter';
-// import TapButton from './tapButton/TapButton';
+import TapCounter from './tapCounter/TapCounter';
+import TapButton from './tapButton/TapButton';
 import './Taps.scss';
 
 export default class Taps extends Component {
@@ -12,8 +12,8 @@ export default class Taps extends Component {
           <div className="taps-message-container">
             <p>Something Occurs @1mil</p>
           </div>
-          {/* <TapCounter /> */}
-          {/* <TapButton /> */}
+          <TapCounter />
+          <TapButton />
         </div>
       </div>
     );
