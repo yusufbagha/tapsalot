@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
-import { check } from 'meteor/check';
 import { Accounts } from 'meteor/accounts-base'
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter'
   
-export const Taps = new Mongo.Collection('taps');
-export const Counter = new Mongo.Collection('counter');
+const Taps = new Mongo.Collection('taps');
+const Counter = new Mongo.Collection('counter');
  
+// Methods
 Meteor.methods({
   'tap.insert'() {
     // Inserts Tap Into Taps Collection
@@ -19,19 +19,27 @@ Meteor.methods({
       Taps.insert(tapObj);
     }
 
-    // Insert Tap or Create User
+    // Insert Tap If Logged In
     if (this.userId) {
       insertTap();
     }
   },
+  'username.update'(newUsername) {
+    Accounts.setUsername(this.userId, newUsername)
+  }
 });
 
+// Publications
 Meteor.publish('taps.count', function tapsPublication() {
   return Counter.find();
 });
 
 Meteor.publish('contributions.count', function contributionPublication() {
   return Taps.find({userId: this.userId});
+});
+
+Meteor.publish("users.online", function() {
+  return Meteor.users.find({ "status.online": true });
 });
 
 if (Counter.find({}).count() == 0) {
@@ -54,6 +62,8 @@ Meteor.setInterval(() => {
  )
 }, 2)
 
+
+// Limit Rules
 const limitTaps = {
   type: 'method',
   name: 'tap.insert',
@@ -63,7 +73,6 @@ const limitTaps = {
     }
   }
 };
-DDPRateLimiter.addRule(limitTaps, 8, 1000)
 
 const limitContributionSub = {
   type: 'publish',
@@ -74,29 +83,24 @@ const limitContributionSub = {
     }
   }
 };
-DDPRateLimiter.addRule(limitContributionSub, 8, 1000)
 
-Meteor.publish("users.online", function() {
-  return Meteor.users.find({ "status.online": true });
-});
+const limitUsername = {
+  type: 'method',
+  name: 'username.update',
+  userId(userId) {
+    if (userId) {
+      return true;
+    }
+  }
+};
 
+DDPRateLimiter.addRule(limitTaps, 8, 1000);
+DDPRateLimiter.addRule(limitContributionSub, 8, 1000);
+DDPRateLimiter.addRule(limitUsername, 1, 1000);
+
+
+// Indexes
 Taps.rawCollection().createIndex({ userId: 1 });
-
-
-// Limit Subscription Updates | DONE
-
-// Figure out how to publish numOfUsers without sending user data
-
-// Show username if logged in & and allow username change, handle available username
-
-// Todo
-
-// Complete Username Change
-// Refactor Code
-// Push To git
-// Email J & A
-
-// Identify Scripting Users
 
 
 
