@@ -1,1 +1,4 @@
 # tipityTap
+
+$ npm install
+$ meteor
