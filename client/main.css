@@ -1,0 +1,91 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/*_____________  Default Styles  _____________*/
+
+html, body {
+  color: #666; 
+  background: #fff;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 300;
+  overflow-x: hidden !important;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+  -webkit-text-size-adjust: 100% !important;
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: #f9ffa4 !important; 
+}
+
+body { overflow: hidden; }
+
+h1, h2, h3, h4, h5, h6, p { color: #666; letter-spacing: 0.5px; }
+p { font-size: 1rem; letter-spacing: 0.5px;}
+a { color: #666; text-decoration: none; letter-spacing: 0.5px;}
+a:hover { color: #666; text-decoration: none; }
+a:link, a:visited, a:active { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+
+button:focus, input:focus, textarea:focus, select:focus { outline: none; }
+button, input, textarea, select { -webkit-appearance: none !important; font-family: 'Open Sans' !important; letter-spacing: 0.5px; }
+button, input, textarea, select { -moz-appearance: none !important; }
+textarea { resize: none !important; }
+
+input[type=text]::-ms-clear {  display: none; width : 0; height: 0; }
+input[type=text]::-ms-reveal {  display: none; width : 0; height: 0; }
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration { display: none; }
+
+::-webkit-input-placeholder { color: #b9b9b9; }
+::-moz-placeholder { color: #b9b9b9; }
+:-ms-input-placeholder { color: #b9b9b9; }
+:-moz-placeholder { color: #b9b9b9; }
+::selection { background: #f9ffa4 !important; }
+::-moz-selection { background: #f9ffa4 !important; }

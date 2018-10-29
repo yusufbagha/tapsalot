@@ -1,0 +1,56 @@
+.contributions-container {
+  display: flex;
+  flex-direction: column-reverse;
+  p {
+    color: #f6a0ff;
+  }
+  .contributions-username {
+    color: #00dece !important;
+    margin-bottom: 12px;
+    i {
+      font-size: 1.6rem;
+      vertical-align: middle;
+      margin-left: 6px;
+      color: #9af4eb;
+    }
+  }
+  @media screen and (min-width: 600px) {
+    flex-direction: column;
+  }
+}
+
+div.swal2-actions {
+  margin: 0 !important;
+
+  button {
+    width: 100% !important;
+    background-color: #00a1ff !important;
+    padding: 12px 0 !important;
+    margin: 5px 0 !important;
+  }
+}
+
+div.swal2-content {
+  input {
+    margin-top: 0 !important;
+  }
+}
+
+.swal2-title:not(:empty) {
+  margin: 15px 0 25px 0 !important;
+  @media screen and (max-width: 433px) {
+    font-size: 1.5rem;
+  }
+  @media screen and (max-width: 387px) {
+    font-size: 1.4rem;
+  }
+  @media screen and (max-width: 366px) {
+    font-size: 1.3rem;
+  }
+  @media screen and (max-width: 346px) {
+    font-size: 1.2rem;
+  }
+  @media screen and (max-width: 326px) {
+    font-size: 1.1rem;
+  }
+}

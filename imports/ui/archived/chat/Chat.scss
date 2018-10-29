@@ -1,0 +1,13 @@
+.chat-wrapper {
+  width: 100%;
+
+  .chat-container {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    padding: 30px 0;
+    width: 100%;
+  }
+}
+

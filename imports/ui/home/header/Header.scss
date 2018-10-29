@@ -1,0 +1,32 @@
+.header-wrapper {
+  width: 100%;
+
+  .header-container {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    padding: 25px 0;
+    @media screen and (min-width: 600px) {
+      -webkit-flex-direction: row;
+      flex-direction: row;
+      -webkit-justify-content: space-between;
+      justify-content: space-between;
+    }
+    
+    p {
+      &:first-child {
+        margin-bottom: 8px;
+        @media screen and (min-width: 360px) {
+          margin-bottom: 10px;
+        }
+      }
+      @media screen and (min-width: 360px) {
+        font-size: 1.1rem;
+      }
+      @media screen and (min-width: 400px) {
+        font-size: 1.2rem;
+      }
+    }
+  }
+}
