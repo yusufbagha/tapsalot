@@ -19,8 +19,8 @@ export default class Chat extends Component {
     return (
       <div className="chat-wrapper">
         <div className="chat-container">
-          <ChatMessages />
           <ChatInputs />
+          <ChatMessages />
         </div>
       </div>
     );

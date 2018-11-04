@@ -3,6 +3,7 @@ import { Accounts } from 'meteor/accounts-base'
 import Header from './header/Header';
 import Taps from './taps/Taps';
 import Leaderboard from './leaderboard/Leaderboard';
+import Chat from './chat/Chat'
 import './Home.scss';
 
 export default class Home extends Component {
@@ -55,6 +56,8 @@ export default class Home extends Component {
           <div className="home-content-wrapper">
             <div className="home-content-container">
               <Taps />
+              <Leaderboard />
+              <Chat />
             </div>
           </div>
         </div>

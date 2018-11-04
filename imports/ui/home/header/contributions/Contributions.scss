@@ -5,13 +5,22 @@
     color: #f6a0ff;
   }
   .contributions-username {
-    color: #00dece !important;
+    color: #00ced2 !important;
     margin-bottom: 12px;
+    margin-left: 3px;
+    span {
+      cursor: pointer;
+      span {
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
     i {
       font-size: 1.6rem;
       vertical-align: middle;
       margin-left: 6px;
-      color: #9af4eb;
+      color: #9ce6e8;
     }
   }
   @media screen and (min-width: 600px) {

@@ -18,10 +18,12 @@ export default class ChatMessages extends Component {
       <div className="chat-messages-wrapper">
         <div className="chat-messages-container">
           <div className="message-container">
-            <p>Hi there!</p>
+            <p>What in the world are we supposed to do? -</p>
+            <p>superduperkyle</p>
           </div>
           <div className="message-container">
-            <p>Nice to meet you.</p>
+            <p>Just keeping clicking ya'll -</p>
+            <p>bunburger</p>
           </div>
         </div>
       </div>

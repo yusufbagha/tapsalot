@@ -1,3 +1,5 @@
+/* Default Application Styles */
+
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
@@ -89,3 +91,5 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 :-moz-placeholder { color: #b9b9b9; }
 ::selection { background: #f9ffa4 !important; }
 ::-moz-selection { background: #f9ffa4 !important; }
+/* ::selection { background: #ffffff00 !important; }
+::-moz-selection { background: #ffffff00 !important; } */

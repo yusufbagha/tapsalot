@@ -48,12 +48,12 @@ export class Contributions extends Component {
         <p>{this.props.counter} Contributions</p>
 
         {/* Username Blank If Not Logged In */}
-        <p className="contributions-username">
+        <p className="contributions-username" onClick={() => this.changeUsername()}>
           { this.props.currentUser ? 
           <span>
-            { this.props.currentUser.username }
+            <span>{ this.props.currentUser.username }</span>
             {/* Font Awesome Icon Triggers changeUsername() When Clicked */}
-            <i className="fas fa-pen-square" onClick={() => this.changeUsername()}></i>
+            <i className="fas fa-pen-square"></i>
           </span> : '' } 
         </p>
       </div>

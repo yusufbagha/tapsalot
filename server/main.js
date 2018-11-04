@@ -51,6 +51,8 @@ Meteor.startup(() => {
   });
 
   // Delayed Counter
+  // Delayed Counter Limits Client Counter Updates 
+  // 
   if (Counter.find({}).count() == 0) {
     let obj = {
       name: 'delayedCounter',
@@ -69,7 +71,7 @@ Meteor.startup(() => {
         }
       }
   )
-  }, 2)
+  }, 150)
 
 
   // Limit Rules
@@ -101,6 +103,9 @@ Meteor.startup(() => {
 });
 
 
+// DDPRate Limiter On Taps Count Publication 1 per 100ms instead of delayed counter
+
+
 // Notes
 
 /*
@@ -119,5 +124,11 @@ Meteor.startup(() => {
   # Social
 
   # Analytics
+
+  ### UI Updates
+
+  # Stop text highlight while clicking
+  # Stop Zooming on iOS while clicking
+  
 
 */

@@ -4,6 +4,11 @@
   max-width: 1920px;
   width: 100%;
 
+  /* Prevent Highlighting When Tapping*/
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+
   .home-container {
     margin: 0 25px;
   }
