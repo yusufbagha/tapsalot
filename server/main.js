@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
+import { check } from 'meteor/check'
 import { Accounts } from 'meteor/accounts-base'
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter'
 
@@ -8,6 +9,9 @@ import { DDPRateLimiter } from 'meteor/ddp-rate-limiter'
 
 const Taps = new Mongo.Collection('taps');
 const Counter = new Mongo.Collection('counter');
+const Messages = new Mongo.Collection('messages');
+const Usernames = new Mongo.Collection('usernames');
+
 
 Meteor.startup(() => {
   // Methods
@@ -30,7 +34,18 @@ Meteor.startup(() => {
     },
     // Updates Username
     'username.update'(newUsername) {
-      Accounts.setUsername(this.userId, newUsername)
+      check(newUsername, String);
+      let username = newUsername.toLowerCase();
+      Accounts.setUsername(this.userId, username)
+    },
+    'message.insert'(message) {
+      let messageObj = {
+        userId: this.userId,
+        message: message,
+        date: new Date()
+      }
+
+      Messages.insert(messageObj)
     }
   });
 
@@ -47,12 +62,31 @@ Meteor.startup(() => {
 
   // Number Of Users Currently Online
   Meteor.publish("users.online", function() {
-    return Meteor.users.find({ "status.online": true });
+    return Meteor.users.find({ "status.online": true }, {
+      fields: { 
+        username: 1,
+        'status.online': 1,
+      }
+    });
+  });
+
+  // Messages
+  Meteor.publish("public.messages", function() {
+    return Messages.find();
+  });
+
+  // Usernames
+  Meteor.publish("public.usernames", function() {
+    return Meteor.users.find({}, {
+      fields: { 
+        username: 1,
+      }
+    });
   });
 
   // Delayed Counter
   // Delayed Counter Limits Client Counter Updates 
-  // 
+    // Might be a good idea to make this a microservice
   if (Counter.find({}).count() == 0) {
     let obj = {
       name: 'delayedCounter',
@@ -71,7 +105,7 @@ Meteor.startup(() => {
         }
       }
   )
-  }, 150)
+  }, 50)
 
 
   // Limit Rules

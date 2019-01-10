@@ -1,0 +1,30 @@
+.chat-messages-wrapper {
+  // background: #fafafa;
+  // border: 1px solid #dedede;
+  // border-radius: 4px 4px 0 0;
+  margin: 25px 0;
+
+  // height: 300px; 
+
+  .chat-messages-container {
+    .message-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      p {
+        margin: 10px 0;
+        &:last-child {
+          margin-left: 5px;
+          color: #ff93c0;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+

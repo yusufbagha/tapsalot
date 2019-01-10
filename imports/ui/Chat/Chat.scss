@@ -1,0 +1,15 @@
+.chat-wrapper {
+  width: 100%;
+  // margin-top: -160px;
+
+  .chat-container {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    padding: 0;
+    width: 100%;
+    align-items: flex-end;
+  }
+}
+

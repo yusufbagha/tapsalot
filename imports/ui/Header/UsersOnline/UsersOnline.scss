@@ -1,0 +1,10 @@
+.users-online-container {
+  margin-top: 10px;
+  @media screen and (min-width: 600px) {
+    text-align: right;
+    margin-top: 0;
+  }
+  p {
+    color: #8e95ff;
+  }
+}
