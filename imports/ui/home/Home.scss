@@ -10,7 +10,10 @@
   -ms-user-select: none;
 
   .home-container {
-    margin: 0 25px;
+    margin: 0 15px;
+    @media screen and (min-width: 600px) {
+      margin: 0 25px;
+    }
   }
 }
 
@@ -19,32 +22,34 @@
     display: -webkit-flex;
     display: flex;
     flex-direction: column;
+    
 
     @media screen and (min-width: 600px) {
-      // flex-direction: row;
+      flex-direction: row;
 
-      .taps-wrapper {
-        width: 100%;
-        // order: 1;
-      }
-      .leaderboard-wrapper, .chat-wrapper {
+      > div {
         width: 30%;
+        &:last-child {
+          order: 2;
+        }
       }
-      .chat-wrapper {
-        order: 2;
+      .taps-wrapper {
+        width: 40%;
+        order: 1;
       }
     }
   }
 }
 
 #appTrigger {
-  position: absolute;
+  position: fixed;
   bottom: 0;
-  align-self: flex-end;
+  right: 0;
   margin-bottom: 20px;
+  margin-right: 20px;
   @media screen and (min-width: 600px) {
     margin-bottom: 50px;
-    padding-right: 30px;
+    padding-right: 50px;
   }
   
   i {

@@ -25,6 +25,7 @@ export default class Chat extends Component {
             <div className="social-content-container">
               <ChatInputs />
               <ChatMessages />
+              <p className="hover-back" onClick={() => this.props.history.push('/')}>Home</p>
             </div> 
           </div>
         </div>

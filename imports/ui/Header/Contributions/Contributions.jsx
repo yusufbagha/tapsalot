@@ -8,6 +8,7 @@ const Taps = new Mongo.Collection('taps');
 
 export class Contributions extends Component {
   // Changes Username
+  
   changeUsername(title) {
     let tryAgain = (title) => {
       this.changeUsername(title);
@@ -19,8 +20,10 @@ export class Contributions extends Component {
       title: title,
       input: 'text',
       inputAttributes: {
-        autocapitalize: 'off'
+        autocapitalize: 'off',
+        maxlength: 10,
       },
+      focusConfirm: false,
       confirmButtonText:  'Change Username',
       backdrop: `
         rgb(174, 152, 255)
@@ -30,13 +33,17 @@ export class Contributions extends Component {
       `
     }).then((result) => {
       if (result.value) {
-        // Calls 'username.update' Method
-        Meteor.call('username.update', result.value, (error, result) => {
-          if (error) {
-            // Runs tryAgain() On Error From Server
-            tryAgain('Username Taken, Try Again');
-          }
-        });
+        if (result.value.length > 3) {
+          // Calls 'username.update' Method
+          Meteor.call('username.update', result.value, (error, result) => {
+            if (error) {
+              // Runs tryAgain() On Error From Server
+              tryAgain('Username Taken, Try Again');
+            }
+          });
+        } else {
+          tryAgain('Usernames must be at least 4 characters');
+        }
       }
     });
   }
@@ -45,14 +52,16 @@ export class Contributions extends Component {
     return (
       <div className="contributions-container">
         {/* Number Of Contributions */}
-        <p>{this.props.counter} Contributions</p>
+        <p>
+          { this.props.currentUser ? 
+            <span>{ this.props.currentUser.profile.contributions }</span> : '0' } Contributions 
+        </p>
 
         {/* Username Blank If Not Logged In */}
         <p className="contributions-username" onClick={() => this.changeUsername()}>
           { this.props.currentUser ? 
           <span>
             <span>{ this.props.currentUser.username }</span>
-            {/* Font Awesome Icon Triggers changeUsername() When Clicked */}
             <i className="fas fa-pen"></i>
           </span> : '' } 
         </p>
@@ -64,12 +73,12 @@ export class Contributions extends Component {
 export default withTracker(() => {
   // Counts Contributions
     // Problem : total number of taps can't load until user contributions are finished being counted
-  Meteor.subscribe('contributions.count');
-  let value = Taps.find({}).count();
-  console.log(value)
+  // Meteor.subscribe('contributions.count');
+  // let value = Taps.find({}).count();
+  // console.log(value)
 
   return {
-    counter: value,
+    // counter: value,
     currentUser: Meteor.user(),
   };
 })(Contributions);

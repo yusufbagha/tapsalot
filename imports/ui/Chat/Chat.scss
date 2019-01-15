@@ -1,15 +1,29 @@
 .chat-wrapper {
   width: 100%;
-  // margin-top: -160px;
 
   .chat-container {
-    display: -webkit-flex;
     display: flex;
-    -webkit-flex-direction: column;
     flex-direction: column;
     padding: 0;
     width: 100%;
-    align-items: flex-end;
+  }
+}
+
+.hover-back {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  margin: 0 20px 20px 0;
+  padding: 15px;
+  font-size: 1.2rem;
+  border-radius: 4px;
+  background: #acadfe;
+  color: #fff;
+  cursor: pointer;
+  &:hover {
+    background: #8283ff;
+    transition:  0.2s;
   }
 }
 

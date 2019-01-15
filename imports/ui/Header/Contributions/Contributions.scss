@@ -5,9 +5,8 @@
     color: #f8b5ff;
   }
   .contributions-username {
-    // color: #00ced2 !important;
     margin-bottom: 12px;
-    margin-left: 3px;
+    margin-left: 1px;
     span {
       cursor: pointer;
       span {
@@ -32,7 +31,7 @@
   }
 }
 
-div.swal2-actions {
+.swal2-actions {
   margin: 0 !important;
 
   button {
@@ -43,9 +42,10 @@ div.swal2-actions {
   }
 }
 
-div.swal2-content {
+.swal2-content {
+  margin-bottom: 20px !important;
   input {
-    margin-top: 0 !important;
+    margin: 0 !important;
   }
 }
 

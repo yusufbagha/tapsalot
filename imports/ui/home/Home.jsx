@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { Accounts } from 'meteor/accounts-base'
 import Header from '../Header/Header';
 import Taps from '../Taps/Taps';
-// import Leaderboard from '../leaderboard/Leaderboard';
-// import Chat from '../chat/Chat'
+import Leaderboard from '../Leaderboard/Leaderboard';
 import './Home.scss';
 
 export default class Home extends Component {
+  componentDidUpdate() {
+    document.body.scrollTop = 0;
+  }
   
   render() {
     return (
@@ -17,9 +18,11 @@ export default class Home extends Component {
           <div className="home-content-wrapper">
             <div className="home-content-container">
               <Taps />
-              <div id="appTrigger">
-                <i className="fas fa-brain" onClick={() => this.props.history.push('/chat')}></i>
-              </div>
+              <Leaderboard history={this.props.history}/>
+              <div></div>
+            </div>
+            <div id="appTrigger">
+              <i className="fas fa-brain" onClick={() => this.props.history.push('/chat')}></i>
             </div>
           </div>
         </div>

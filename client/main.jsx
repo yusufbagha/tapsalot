@@ -20,7 +20,7 @@ Meteor.startup(() => {
     // Returns Random Username -- Generating Username On Client
     let generateUsername = () => {
       // Write Better Username Generator
-      return randomStr(2);
+      return randomStr(1);
     }
 
     // Creates User Account
@@ -40,9 +40,9 @@ Meteor.startup(() => {
     // Inserts Tap &OR Creates User
     if (!Meteor.user()) {
       createUser();
-      Meteor.call('tap.insert');
+      Meteor.call('tap.insert', 'hotfudge');
     } else {
-      Meteor.call('tap.insert');
+      Meteor.call('tap.insert', 'hotfudge');
     }
   });
   

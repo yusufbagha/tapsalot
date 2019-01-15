@@ -2,20 +2,24 @@
   // background: #fafafa;
   // border: 1px solid #dedede;
   // border-radius: 4px 4px 0 0;
-  margin: 25px 0;
-
-  // height: 300px; 
+  margin: 20px 0;
 
   .chat-messages-container {
     .message-container {
       display: flex;
       flex-direction: row;
-      justify-content: flex-end;
+      margin-left: 3px;
+      margin-bottom: 15px;
       p {
-        margin: 10px 0;
-        &:last-child {
-          margin-left: 5px;
-          color: #ff93c0;
+        font-size: 1.1rem;
+        line-height: 1.5;
+        overflow-wrap: break-word;
+        overflow: hidden;
+        color: #777;
+
+        span {
+          color: #e4bc73;
+          cursor: pointer;
           &:hover {
             text-decoration: underline;
           }

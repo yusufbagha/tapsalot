@@ -1,12 +1,10 @@
 .leaderboard-wrapper {
-  // Temp
-  // margin-top: -450px;
-
-
+  
   .leaderboard-options {
     display: inline-flex;
     border: 1px solid #a0cfff;
     border-radius: 4px;
+    cursor: pointer;
     p {
       padding: 12px 0;
       width: 80px;
@@ -30,7 +28,11 @@
   }
 
   .leaderboard-items {
-    margin: 25px 0;
+    margin: 50px 0;
+
+    @media screen and (min-width: 600px) {
+      margin: 25px 0;
+    }
 
     .leaderboard-item {
       display: flex;
@@ -42,6 +44,7 @@
         color: #a4aaff;
         &:last-child {
           margin-left: 5px;
+          cursor: pointer;
           &:hover {
             text-decoration: underline;
           }

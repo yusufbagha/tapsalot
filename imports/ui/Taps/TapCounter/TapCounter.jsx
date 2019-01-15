@@ -10,7 +10,7 @@ class TapCounter extends Component {
     return (
       <div className="tap-counter-container">
         {/* Number Of Global Taps */}
-        <p>{this.props.counter}</p>
+        <p>{ this.props.counter ? <span>{ this.props.counter }</span> : '0' }</p>
       </div>
     );
   }

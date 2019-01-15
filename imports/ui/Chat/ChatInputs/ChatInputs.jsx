@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './ChatInputs.scss';
 import { Meteor } from 'meteor/meteor';
+import swal from 'sweetalert2';
 
 
 export default class ChatInputs extends Component {
@@ -31,7 +32,15 @@ export default class ChatInputs extends Component {
         inputElement.value = '';
       }
 
-      Meteor.call('message.insert', message)
+      if (1 < message.length) {
+        Meteor.call('message.insert', message, (error, result) => {
+          if (error) {
+            swal('Oops...', error.message ,'error');
+          }
+        });
+      } else {
+        swal('Whoops!', 'Messages must be at least 2 characters' ,'error');
+      }
     }
 
     if (event.key == 'Enter' || element.tagName == 'I') {
@@ -42,7 +51,7 @@ export default class ChatInputs extends Component {
   render() {
     return (
       <div className="chat-inputs-container">
-        <input type="text" placeholder={`type something ${this.randomAdj()}... only 25 contributions`} onKeyPress={this.sendMessage} maxLength='100' />
+        <input type="text" placeholder={`Type something ${this.randomAdj()}... Only 25 Contributions`} onKeyPress={this.sendMessage} maxLength='100' />
         <button><i className="fab fa-telegram-plane" onClick={this.sendMessage}></i></button>
       </div>
     );
