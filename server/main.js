@@ -19,15 +19,7 @@ Meteor.startup(() => {
   // Methods
   Meteor.methods({
     // Inserts Taps
-    'tap.insert'(secret) {
-      // To prevent calling the method directly without secret - i.e 'Meteor.call('tap.insert')'
-        // secret can be seen in client code, but this should prevent non-technical attacks
-        // Of course button can be clicked with js - i.e 'document.getElementsByClassName('tap-button-container')[0].click()'
-      check(secret, String)
-      if (secret != 'hotfudge') {
-        throw new Meteor.Error('error', "Internal Server Error");  
-      }
-
+    'tap.insert'() {
       let insertTap = () => {
         let tapObj = {
           userId: this.userId,
@@ -37,26 +29,31 @@ Meteor.startup(() => {
 
         Taps.insert(tapObj);
 
-        let contributions = Meteor.user().profile.contributions;
-        let newContribution = Number(contributions) + 1;
+        let contributions = Number(Meteor.user().profile.contributions);
+        let newContribution = contributions + 1;
 
         // Anti Cheating
         let antiCheating = () => {
           if (contributions > 100) {
             // DDPRate Limit is 10 per second
+            console.log('checked')
             let taps = Taps.findOne({userId : this.userId}, {sort : {date: -1}, skip : 99});
             let now = Date.now();
             let then = taps.date.getTime();
             let difference = now - then;
+
+            console.log(difference)
     
-            if (difference < 10000) { 
-              console.log('cheater spotted')
-              // Likely a cheater - Do something funny to them
+            if (difference < 10100) { 
+              Meteor.users.update({_id: Meteor.user()._id}, { $set: {'profile.contributions' : 0}});
+              Meteor.users.update(Meteor.user()._id, { $set: {"services.resume.loginTokens": []}});
+              Taps.remove({userId: this.userId});
+              newContribution = 0;
             }
           }
         }
 
-        if (Number(contributions) % 10 == 0) {
+        if (contributions % 10 == 0) {
           antiCheating();
         }
 

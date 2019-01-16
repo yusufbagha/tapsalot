@@ -40,9 +40,9 @@ Meteor.startup(() => {
     // Inserts Tap &OR Creates User
     if (!Meteor.user()) {
       createUser();
-      Meteor.call('tap.insert', 'hotfudge');
+      Meteor.call('tap.insert');
     } else {
-      Meteor.call('tap.insert', 'hotfudge');
+      Meteor.call('tap.insert');
     }
   });
   

@@ -32,14 +32,18 @@ export default class ChatInputs extends Component {
         inputElement.value = '';
       }
 
-      if (1 < message.length) {
-        Meteor.call('message.insert', message, (error, result) => {
-          if (error) {
-            swal('Oops...', error.message ,'error');
-          }
-        });
+      if (Meteor.user().profile.contributions >= 25) {
+        if (1 < message.length) {
+          Meteor.call('message.insert', message, (error, result) => {
+            if (error) {
+              swal('Oops...', error.message ,'error');
+            }
+          });
+        } else {
+          swal('Whoops!', 'Messages must be at least 2 characters' ,'error');
+        }
       } else {
-        swal('Whoops!', 'Messages must be at least 2 characters' ,'error');
+        swal('Whoops!', 'Not enough contributions. You need 25 to send a message. You can earn more by clicking' ,'error');
       }
     }
 
