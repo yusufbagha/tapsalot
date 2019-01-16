@@ -10,7 +10,7 @@ export default class Taps extends Component {
       <div className="taps-wrapper">
         <div className="taps-container">
           <div className="taps-message-container">
-            <p>Something Occurs @1mil</p>
+            <p>Something Occurs @10m</p>
           </div>
           <TapCounter />
           <TapButton />

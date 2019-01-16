@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check'
+import { HTTP } from 'meteor/http'
+import { Session } from 'meteor/session'
 import { Accounts } from 'meteor/accounts-base'
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter'
 
@@ -105,7 +107,18 @@ Meteor.startup(() => {
       } else {
         throw new Meteor.Error('error', "Not enough contributions. You need 25 to send a message. You can earn more by clicking");        
       }
-    }
+    },
+    'gif.get'() {
+      let result = HTTP.call('GET', 'https://api.giphy.com/v1/gifs/random', {
+        data: { 
+          api_key : 'JV5ojFZAjMYai9rQLlA7xOOXaWsVjHr3',
+          tag: 'meme',
+          fmt: 'json', 
+        }
+      });
+
+      return result;
+    },
   });
 
   // Publications
@@ -275,6 +288,8 @@ Meteor.startup(() => {
 
   - fix grammer (1 contribution vs 5 contributions)
 
+  - better name generator*
+
   - add randomness
 
   - react scroll to top
@@ -295,5 +310,31 @@ Local Randomness
 
 Random Randomness
 - Things happen randomly
+
+
+LIST OF THINGS
+- Random Images When Opening Modals
+
+// Rick roll open new tab
+
+// Physics balls on screen
+
+// Random images flying across the screen
+
+// rockets
+
+// confetti
+
+// inverted colors or recolor the entire page
+
+// sounds // quotes // robot voices
+
+// Send things to users for contributions // play tts on user for 100 contributions // notification who sent // send meme
+
+// different weather 
+
+// Memes on screen
+
+// when opening modal : audio plays, random. ex. you're fired
 
 */

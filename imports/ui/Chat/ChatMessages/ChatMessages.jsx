@@ -51,7 +51,7 @@ export default withTracker(() => {
   let limit = Session.get('limit')
 
   if (limit == undefined) {
-    limit = 60;
+    limit = 50;
     Session.set('limit', limit)
   }
 
@@ -60,7 +60,7 @@ export default withTracker(() => {
 
   window.onscroll = (event) => {
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-      Session.set('limit', limit + 50)
+      Session.set('limit', limit + 30)
     }
   };
 

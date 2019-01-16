@@ -21,8 +21,9 @@ export default class Home extends Component {
               <Leaderboard history={this.props.history}/>
               <div></div>
             </div>
-            <div id="appTrigger">
-              <i className="fas fa-brain" onClick={() => this.props.history.push('/chat')}></i>
+            <div className="trigger-container ">
+              {/* <i className="fas fa-comment-alt chat" onClick={() => this.props.history.push('/chat')}></i> */}
+              <i className="fas fa-brain social" onClick={() => this.props.history.push('/chat')}></i>
             </div>
           </div>
         </div>

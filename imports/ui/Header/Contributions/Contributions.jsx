@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
+import { Session } from 'meteor/session'
 import swal from 'sweetalert2'
 import './Contributions.scss';
-
-// Is there a better way to declare mongo collections in react components?
-const Taps = new Mongo.Collection('taps');
 
 export class Contributions extends Component {
   // Changes Username
@@ -14,38 +12,80 @@ export class Contributions extends Component {
       this.changeUsername(title);
     }
 
-    // SweetAlert
-    swal({
-      padding: '1.5em',
-      title: title,
-      input: 'text',
-      inputAttributes: {
-        autocapitalize: 'off',
-        maxlength: 10,
-      },
-      focusConfirm: false,
-      confirmButtonText:  'Change Username',
-      backdrop: `
-        rgb(174, 152, 255)
-        url("https://sweetalert2.github.io/images/nyan-cat.gif")
-        center left
-        no-repeat
-      `
-    }).then((result) => {
-      if (result.value) {
-        if (result.value.length > 3) {
-          // Calls 'username.update' Method
-          Meteor.call('username.update', result.value, (error, result) => {
-            if (error) {
-              // Runs tryAgain() On Error From Server
-              tryAgain('Username Taken, Try Again');
-            }
-          });
-        } else {
-          tryAgain('Usernames must be at least 4 characters');
+    let gif = 'https://sweetalert2.github.io/images/nyan-cat.gif'
+
+    // Meteor.call('gif.get', (error, result) => {
+    //   if (!error) {
+    //     gif = result.data.data.image_url;
+    //   }
+
+    //   console.log(result.data.data)
+
+      swal({
+        padding: '1.5em',
+        title: title,
+        input: 'text',
+        inputAttributes: {
+          autocapitalize: 'off',
+          maxlength: 10,
+        },
+        focusConfirm: false,
+        confirmButtonText:  'Change Username',
+        backdrop: `
+          rgb(174, 152, 255)
+          url(${gif})
+          center left
+          no-repeat
+        `
+      }).then((result) => {
+        if (result.value) {
+          if (result.value.length > 3) {
+            // Calls 'username.update' Method
+            Meteor.call('username.update', result.value, (error, result) => {
+              if (error) {
+                // Runs tryAgain() On Error From Server
+                tryAgain('Username Taken, Try Again');
+              }
+            });
+          } else {
+            tryAgain('Usernames must be at least 4 characters');
+          }
         }
-      }
-    });
+      });
+    // });
+
+    // SweetAlert
+    // swal({
+    //   padding: '1.5em',
+    //   title: title,
+    //   input: 'text',
+    //   inputAttributes: {
+    //     autocapitalize: 'off',
+    //     maxlength: 10,
+    //   },
+    //   focusConfirm: false,
+    //   confirmButtonText:  'Change Username',
+    //   backdrop: `
+    //     rgb(174, 152, 255)
+    //     url(${gif})
+    //     center left
+    //     no-repeat
+    //   `
+    // }).then((result) => {
+    //   if (result.value) {
+    //     if (result.value.length > 3) {
+    //       // Calls 'username.update' Method
+    //       Meteor.call('username.update', result.value, (error, result) => {
+    //         if (error) {
+    //           // Runs tryAgain() On Error From Server
+    //           tryAgain('Username Taken, Try Again');
+    //         }
+    //       });
+    //     } else {
+    //       tryAgain('Usernames must be at least 4 characters');
+    //     }
+    //   }
+    // });
   }
 
   render() {
@@ -71,14 +111,7 @@ export class Contributions extends Component {
 }
 
 export default withTracker(() => {
-  // Counts Contributions
-    // Problem : total number of taps can't load until user contributions are finished being counted
-  // Meteor.subscribe('contributions.count');
-  // let value = Taps.find({}).count();
-  // console.log(value)
-
   return {
-    // counter: value,
     currentUser: Meteor.user(),
   };
 })(Contributions);
