@@ -12,8 +12,6 @@ import { DDPRateLimiter } from 'meteor/ddp-rate-limiter'
 const Taps = new Mongo.Collection('taps');
 const Counter = new Mongo.Collection('counter');
 const Messages = new Mongo.Collection('messages');
-const Usernames = new Mongo.Collection('usernames');
-
 
 Meteor.startup(() => {
   // Methods
@@ -105,17 +103,17 @@ Meteor.startup(() => {
         throw new Meteor.Error('error', "Not enough contributions. You need 25 to send a message. You can earn more by clicking");        
       }
     },
-    'gif.get'() {
-      let result = HTTP.call('GET', 'https://api.giphy.com/v1/gifs/random', {
-        data: { 
-          api_key : 'JV5ojFZAjMYai9rQLlA7xOOXaWsVjHr3',
-          tag: 'meme',
-          fmt: 'json', 
-        }
-      });
+    // 'gif.get'() {
+    //   let result = HTTP.call('GET', 'https://api.giphy.com/v1/gifs/random', {
+    //     data: { 
+    //       api_key : 'JV5ojFZAjMYai9rQLlA7xOOXaWsVjHr3',
+    //       tag: 'meme',
+    //       fmt: 'json', 
+    //     }
+    //   });
 
-      return result;
-    },
+    //   return result;
+    // },
   });
 
   // Publications
@@ -208,7 +206,7 @@ Meteor.startup(() => {
 
   DDPRateLimiter.addRule(tapInsertRule, 10, 1000);
   DDPRateLimiter.addRule(usernameUpdateRule, 1, 1000);
-  DDPRateLimiter.addRule(messageInsertRule, 1, 2000);
+  DDPRateLimiter.addRule(messageInsertRule, 1, 1000);
   // DDPRateLimiter.addRule(tapsCountRule, 1, 1000);
 
   Meteor.users.deny({
@@ -218,6 +216,8 @@ Meteor.startup(() => {
 
   // Indexes
   Taps.rawCollection().createIndex({ userId: 1 });
+  Messages.rawCollection().createIndex({ date: -1 });
+  Meteor.users.rawCollection().createIndex({ 'profile.contributions': -1 });
 });
 
 
@@ -333,5 +333,16 @@ LIST OF THINGS
 // Memes on screen
 
 // when opening modal : audio plays, random. ex. you're fired
+
+*/
+
+
+/* 
+
+ Things TODO
+
+ - finish social
+ - add random
+ - clean code
 
 */

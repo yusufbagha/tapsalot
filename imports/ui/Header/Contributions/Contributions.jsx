@@ -115,14 +115,3 @@ export default withTracker(() => {
     currentUser: Meteor.user(),
   };
 })(Contributions);
-
-// Comments
-
-/* 
-
-  # Random things occur when opening changeUsername() view
-
-  # Giphy dev key : 'JV5ojFZAjMYai9rQLlA7xOOXaWsVjHr3'
-  # NOTE : DO NOT PUT PRODUCTION KEYS IN CLIENT
-
-*/
