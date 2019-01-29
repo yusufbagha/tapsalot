@@ -1,5 +1,5 @@
 # tapsalot
 
-// Packages will install automatically
+### Packages Will Automatically Be Installed
 $ meteor
 
