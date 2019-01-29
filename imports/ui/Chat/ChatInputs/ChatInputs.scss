@@ -1,8 +1,8 @@
 .chat-inputs-container {
-  width: 100%;
   display: flex;
   flex-direction: row;
   margin-top: 20px;
+  width: 100%;
 
   @media screen and (min-width: 600px) {
     margin-top: 0;
@@ -26,16 +26,16 @@
   }
 
   button {
-    padding: 0px;
+    background: #ffc9c9;
     border: none;
     border-radius: 0 4px 4px 0;
-    background: #ffc9c9;
-    width: 54px;
+    padding: 0px;
     height: 52px;
+    width: 54px;
     vertical-align: middle;
     i {
-      font-size: 1.6rem;
       color: #fff;
+      font-size: 1.6rem;
     }
     &:hover {
       background: #ff9999;

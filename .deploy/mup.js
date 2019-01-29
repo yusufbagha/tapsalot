@@ -2,7 +2,7 @@ module.exports = {
   servers: {
     one: {
       // TODO: set host address, username, and authentication method
-      host: '54.234.197.73',
+      host: '3.83.213.133',
       username: 'ubuntu',
       pem: '~/Desktop/TapKey.pem'
       // password: 'server-password'
@@ -12,7 +12,7 @@ module.exports = {
 
   app: {
     // TODO: change app name and path
-    name: 'Tapalot',
+    name: 'Tapsalot',
     path: '../',
 
     servers: {
@@ -26,7 +26,7 @@ module.exports = {
     env: {
       // TODO: Change to your app's url
       // If you are using ssl, it needs to start with https://
-      ROOT_URL: 'https://tapalot.com',
+      ROOT_URL: 'http://tapsalot.com',
       MONGO_URL: 'mongodb://mongodb/meteor',
       MONGO_OPLOG_URL: 'mongodb://mongodb/local',
     },
@@ -53,11 +53,11 @@ module.exports = {
   // app when there are several apps
 
   // proxy: {
-  //   domains: 'mywebsite.com,www.mywebsite.com',
+  //   domains: 'tapsalot.com',
 
   //   ssl: {
-  //     // Enable Let's Encrypt
-  //     letsEncryptEmail: 'email@domain.com'
+  //     crt: '~/Desktop/tapsalot.cer',
+  //     key: '~/Desktop/tapsalot.key'
   //   }
   // }
 };

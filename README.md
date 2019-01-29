@@ -1,4 +1,5 @@
-# tipityTap
+# tapsalot
 
-$ npm install
+// Packages will install automatically
 $ meteor
+

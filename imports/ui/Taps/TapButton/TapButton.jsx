@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import './TapButton.scss';
 
-// 'click' Event Listener Is In 'Home.jsx'
-
+// 'click' Event Listener Is In 'main.jsx'
 export default class TapButton extends Component {
   render() {
     return (
       <div className="tap-button-container">
-        <button>Tap</button>
+        <p>Tap</p>
       </div>
     );
   }

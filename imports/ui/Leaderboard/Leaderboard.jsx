@@ -1,31 +1,14 @@
 import React, { Component } from 'react';
-import { Session } from 'meteor/session'
 import { withTracker } from 'meteor/react-meteor-data';
-import swal from 'sweetalert2'
+import { Profile } from '../Profile/profile'
 import './Leaderboard.scss';
 
-// Leaderboard Component Is Empty
-
-class Leaderboard extends Component {
-  showProfile(user) {
-    swal({
-      title: user.username,
-      text: `${user.profile.contributions} Contributions`,
-      showConfirmButton: false,
-      backdrop: `
-        rgb(174, 152, 255)
-        url("https://sweetalert2.github.io/images/nyan-cat.gif")
-        center left
-        no-repeat
-      `
-    });
-  }
-  
+class Leaderboard extends Component {  
   renderUsers() {
     return this.props.users.map((user, index) => (
       <div className="leaderboard-item" key={user._id}>
         <p>{index + 1} :</p>
-        <p onClick={() => this.showProfile(user)}>{user.username} ({user.profile.contributions})</p>
+        <p onClick={() => Profile(user)}>{user.username} ({ user.profile.contributions ? <span>{ user.profile.contributions }</span> : '0' })</p>
       </div>
     ));
   }
@@ -48,12 +31,29 @@ class Leaderboard extends Component {
   }
 }
 
-
 export default withTracker(() => {
   Meteor.subscribe('public.users');
+
+  // get top 50 users
   let users = Meteor.users.find({}, {sort: {'profile.contributions': -1}, limit: 50}).fetch();
+  let checkedUsers = [];
+
+  // checking if users have profile contribution : likely cause - legacy accounts
+  for (let user of users) {
+    // refactor
+      // 'if' nightmare caused by data bug 
+    if (user) {
+      if (user.profile) {
+        if (!user.profile.contributions) {
+          user.profile.contributions = 0;
+        }
+  
+        checkedUsers.push(user);
+      }
+    }
+  }
 
   return {
-    users: users,
+    users: checkedUsers,
   };
 })(Leaderboard);

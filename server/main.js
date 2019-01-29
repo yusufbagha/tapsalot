@@ -1,24 +1,44 @@
 import { Meteor } from 'meteor/meteor';
-import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check'
 import { HTTP } from 'meteor/http'
-import { Session } from 'meteor/session'
 import { Accounts } from 'meteor/accounts-base'
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter'
 
-// refactor server code
-  // split into different files under /imports/api
+// seperate server code into different files under /imports/api
 
-const Taps = new Mongo.Collection('taps');
-const Counter = new Mongo.Collection('counter');
-const Messages = new Mongo.Collection('messages');
+// Mongo Declarations
+import { Taps, Counter, Messages } from '../imports/api/collections';
 
 Meteor.startup(() => {
+/*_______________________________________________________________________________________________________________________________________________________*/
+  
   // Methods
   Meteor.methods({
-    // Inserts Taps
     'tap.insert'() {
+      let contributions = Number(Meteor.user().profile.contributions);
+      let newContribution = contributions + 1;
+
+      let antiCheating = () => {
+        if (contributions > 100) {
+          // DDPRate Limit is 10 per second
+          let oldTap = Taps.findOne({userId : this.userId}, {sort : {date: -1}, skip : 99});
+          let now = Date.now();
+          let then = oldTap.date.getTime();
+          let difference = now - then;
+          
+          console.log(difference)
+          // if difference between current time and oldTap time is less then 10.5s user has been hitting the DDPRate limit for 10 seconds
+            // likely a cheater
+          if (difference < 10500) { 
+            Meteor.users.update({_id: Meteor.user()._id}, { $set: {'profile.contributions' : 0}});
+            Taps.remove({userId: this.userId});
+            newContribution = contributions - (contributions * 2);
+          }
+        }
+      }
+
       let insertTap = () => {
+        // add tapObj to Taps
         let tapObj = {
           userId: this.userId,
           date: new Date(),
@@ -27,105 +47,82 @@ Meteor.startup(() => {
 
         Taps.insert(tapObj);
 
-        let contributions = Number(Meteor.user().profile.contributions);
-        let newContribution = contributions + 1;
-
-        // Anti Cheating
-        let antiCheating = () => {
-          if (contributions > 100) {
-            // DDPRate Limit is 10 per second
-            console.log('checked')
-            let taps = Taps.findOne({userId : this.userId}, {sort : {date: -1}, skip : 99});
-            let now = Date.now();
-            let then = taps.date.getTime();
-            let difference = now - then;
-
-            console.log(difference)
-    
-            if (difference < 10100) { 
-              Meteor.users.update({_id: Meteor.user()._id}, { $set: {'profile.contributions' : 0}});
-              Meteor.users.update(Meteor.user()._id, { $set: {"services.resume.loginTokens": []}});
-              Taps.remove({userId: this.userId});
-              newContribution = 0;
-            }
-          }
-        }
-
+        // invoke anti cheating every 10th contribition
         if (contributions % 10 == 0) {
           antiCheating();
         }
 
+        // increment user contributions
         if (contributions) {
           Meteor.users.update({_id: Meteor.user()._id}, { $set: {'profile.contributions' : newContribution}});
         } else {
-          // first time tap initialize
+          // tap initialization
+            // checking if length is below 10 : Account.createUser() is a client method  
           if (Meteor.user().username.length >= 10) {
+            // random string not ideal
             Accounts.setUsername(this.userId, String(Math.random().toString(36).slice(-10)));
           }
           Meteor.users.update({_id: Meteor.user()._id}, { $set: {'profile.contributions' : 1}});
         }
       }
       
-      // Insert Tap If Logged In
+      // insert tap if logged in
       if (this.userId) {
         insertTap();
       }
     },
-    // Updates Username
     'username.update'(newUsername) {
       check(newUsername, String);
-      if (3 < newUsername.length <= 10 ) {
+      let length = newUsername.length;
+
+      if (length > 3 && length <= 10) {
         let username = newUsername.toLowerCase();
         Accounts.setUsername(this.userId, username)
       }
     },
     'message.insert'(message) {
       check(message, String);
+      let length = message.length;
 
-      if (1 < message.length <= 150 ) {
+      if (length > 1 && length <= 150) {
+        let messageObj = {
+          userId: this.userId,
+          message: message,
+          date: new Date(),
+          ip: this.connection.clientAddress,
+        }
 
-      }
+        let contributions = Meteor.user().profile.contributions;
+        let newContribution = Number(contributions) - 25;
 
-      let messageObj = {
-        userId: this.userId,
-        message: message,
-        date: new Date(),
-        ip: this.connection.clientAddress,
-      }
-
-      let contributions = Meteor.user().profile.contributions;
-      let newContribution = Number(contributions) - 25;
-
-      if (contributions >= 25) {
-        Meteor.users.update({_id: Meteor.user()._id}, { $set: {'profile.contributions' : newContribution}});
-        Messages.insert(messageObj)
-      } else {
-        throw new Meteor.Error('error', "Not enough contributions. You need 25 to send a message. You can earn more by clicking");        
+        if (contributions >= 25) {
+          Meteor.users.update({_id: Meteor.user()._id}, { $set: {'profile.contributions' : newContribution}});
+          Messages.insert(messageObj)
+        } else {
+          throw new Meteor.Error('error', "Not enough contributions. You need 25 to send a message. You can earn more by clicking");        
+        }
       }
     },
-    // 'gif.get'() {
-    //   let result = HTTP.call('GET', 'https://api.giphy.com/v1/gifs/random', {
-    //     data: { 
-    //       api_key : 'JV5ojFZAjMYai9rQLlA7xOOXaWsVjHr3',
-    //       tag: 'meme',
-    //       fmt: 'json', 
-    //     }
-    //   });
+    'gif.get'() {
+      let result = HTTP.call('GET', 'https://api.giphy.com/v1/gifs/random', {
+        data: { 
+          api_key : 'JV5ojFZAjMYai9rQLlA7xOOXaWsVjHr3',
+          tag: 'meme',
+          fmt: 'json', 
+        }
+      });
 
-    //   return result;
-    // },
+      return result;
+    },
   });
+
+/*_______________________________________________________________________________________________________________________________________________________*/
 
   // Publications
   // Number Of Global Taps
   Meteor.publish('taps.count', function tapsPublication() {
     return Counter.find();
   });
-
-  // // Number Of User Contributions
-  // Meteor.publish('contributions.count', function contributionPublication() {
-  //   return Taps.find({userId: this.userId});
-  // });
 
   // Number Of Users Currently Online
   Meteor.publish("users.online", function() {
@@ -156,9 +153,15 @@ Meteor.startup(() => {
     });
   });
 
+/*_______________________________________________________________________________________________________________________________________________________*/
+
   // Delayed Counter
-  // Delayed Counter Limits Client Counter Updates 
-    // Might be a good idea to make this a microservice
+    // non-ideal way to limit client counter updates 
+      // each update made to mongo triggers an update on every client
+      // limiting client updates to 50ms instead of every time mongo is updated : the latter creates a backlog of requests
+      // might be a good idea to make this a microservice
+
+  // initital setup
   if (Counter.find({}).count() == 0) {
     let obj = {
       name: 'delayedCounter',
@@ -167,10 +170,12 @@ Meteor.startup(() => {
     Counter.insert(obj)
   }
 
+  // brute : implement better solution asap
   Meteor.setInterval(() => {
     let value = Taps.find({}).count();
     let counterValue = Counter.find({name : 'delayedCounter'});
 
+    // prevent unnecessary db updates
     if (value != counterValue ) {
       Counter.update(
         { name: 'delayedCounter' },
@@ -183,8 +188,9 @@ Meteor.startup(() => {
     }
   }, 50)
 
+/*_______________________________________________________________________________________________________________________________________________________*/
 
-  // Limit Rules
+  // Rate Limit Rules
   let createRule = (type, name) => {
     let ruleObj = {
       type: type,
@@ -202,98 +208,25 @@ Meteor.startup(() => {
   let tapInsertRule = createRule('method', 'tap.insert');
   let usernameUpdateRule = createRule('method', 'username.update');
   let messageInsertRule = createRule('method', 'message.insert');
-  // let tapsCountRule = createRule('publish', 'taps.count');
 
   DDPRateLimiter.addRule(tapInsertRule, 10, 1000);
   DDPRateLimiter.addRule(usernameUpdateRule, 1, 1000);
   DDPRateLimiter.addRule(messageInsertRule, 1, 1000);
-  // DDPRateLimiter.addRule(tapsCountRule, 1, 1000);
 
   Meteor.users.deny({
     update() { return true; }
   });
 
+/*_______________________________________________________________________________________________________________________________________________________*/
 
   // Indexes
   Taps.rawCollection().createIndex({ userId: 1 });
   Messages.rawCollection().createIndex({ date: -1 });
   Meteor.users.rawCollection().createIndex({ 'profile.contributions': -1 });
+
+/*_______________________________________________________________________________________________________________________________________________________*/
+
 });
-
-
-// DDPRate Limiter On Taps Count Publication 1 per 100ms instead of delayed counter
-
-
-// Notes
-
-/*
-
-  # Refactor server code
-
-  # Figure out how to publish number of users currently online without sending user document to client
-
-  # Limit methods and subsciptions for non logged in users
-
-  # Identify scripting users and do something naughty
-
-
-  ### Future Features 
-
-  # Social
-
-  # Analytics
-
-  ### UI Updates
-
-  # Stop text highlight while clicking
-  # Stop Zooming on iOS while clicking
-
-
-  Tasks
-
-  - Fix Chat Design DONE
-  
-  - Chat loading
-
-  - Add leaderboards
-
-  - make messages cost CC
-
-
-  - Add limit for messages and limit for usernames
-
-  - Add error handling
-    - too many requests
-    - not enough credits
-    - username not long enough or too long
-    - message too long or not long enough
-  
-  - add checks tap method and others
-
-  - add scripting check
-
-  - profile modal
-
-
-
-
-
-
-  - chat loading
-
-  - fix mobile styles & swal styles & remove unnecessary styles
-
-  - fix grammer (1 contribution vs 5 contributions)
-
-  - better name generator*
-
-  - add randomness
-
-  - react scroll to top
-
-*/
-
-
 
 /*
 
@@ -309,8 +242,9 @@ Random Randomness
 - Things happen randomly
 
 
-LIST OF THINGS
-- Random Images When Opening Modals
+Ideas
+
+// Random Images When Opening Modals
 
 // Rick roll open new tab
 
@@ -333,16 +267,5 @@ LIST OF THINGS
 // Memes on screen
 
 // when opening modal : audio plays, random. ex. you're fired
-
-*/
-
-
-/* 
-
- Things TODO
-
- - finish social
- - add random
- - clean code
 
 */

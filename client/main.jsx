@@ -5,9 +5,10 @@ import { renderRoutes } from '../imports/startup/client/routes';
 
 Meteor.startup(() => {
 
-  // import this
+  // refactor and seperate into component
+    // quick code : bad way to attach global event listener : cleanup
   document.getElementById('react-target').addEventListener('click', () => {
-    // Returns Random 10 Character String
+    // returns random 10 character string
     let randomStr = (times) => {
       let str = '';
       for (let i = 0; i < times; i++) {
@@ -17,13 +18,13 @@ Meteor.startup(() => {
       return str;
     }
 
-    // Returns Random Username -- Generating Username On Client
+    // generating username on client -- 'Account.createUser()' is a client method
     let generateUsername = () => {
-      // Write Better Username Generator
+      // write better username generator
       return randomStr(1);
     }
 
-    // Creates User Account
+    // creates user account
     let createUser = () => {
       let userObj = {
         username: generateUsername(),
@@ -37,7 +38,7 @@ Meteor.startup(() => {
       Accounts.createUser(userObj);
     }
 
-    // Inserts Tap &OR Creates User
+    // inserts tap &OR creates user
     if (!Meteor.user()) {
       createUser();
       Meteor.call('tap.insert');

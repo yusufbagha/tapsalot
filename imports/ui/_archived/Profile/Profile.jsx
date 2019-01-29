@@ -4,10 +4,6 @@ import { withTracker } from 'meteor/react-meteor-data';
 import './Profile.scss';
 
 class Profile extends Component {
-  componentDidUpdate() {
-    document.body.scrollTop = 0;
-  }  
-
   render() {
     if (this.props.user == undefined) {
       this.props.history.push('/')

@@ -4,11 +4,7 @@ import Taps from '../Taps/Taps';
 import Leaderboard from '../Leaderboard/Leaderboard';
 import './Home.scss';
 
-export default class Home extends Component {
-  componentDidUpdate() {
-    document.body.scrollTop = 0;
-  }
-  
+export default class Home extends Component {  
   render() {
     return (
       //  home-wrapper Triggers tap() When Clicked
@@ -18,7 +14,8 @@ export default class Home extends Component {
           <div className="home-content-wrapper">
             <div className="home-content-container">
               <Taps />
-              <Leaderboard history={this.props.history}/>
+              <Leaderboard />
+              {/* <Leaderboard history={this.props.history}/> */}
               <div></div>
             </div>
             <div className="trigger-container ">

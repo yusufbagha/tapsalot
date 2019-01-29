@@ -1,37 +1,18 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import swal from 'sweetalert2'
-import './ChatMessages.scss';
 import { Session } from 'meteor/session';
-
-const Messages = new Mongo.Collection('messages');
-let limit = 50;
+import { Messages } from '../../../api/collections';
+import { Profile } from '../../Profile/profile'
+import './ChatMessages.scss';
 
 class ChatMessages extends Component {
-  showProfile(user) {
-    swal({
-      title: user.username,
-      text: `${user.profile.contributions} Contributions`,
-      showConfirmButton: false,
-      backdrop: `
-        rgb(174, 152, 255)
-        url("https://sweetalert2.github.io/images/nyan-cat.gif")
-        center left
-        no-repeat
-      `
-    });
-  }
-
   renderMessages() {
     return this.props.messages.map((message) => (
       <div className="message-container" key={message._id}>
-          <p><span onClick={() => this.showProfile(message.user)}>{message.user.username}</span> - {message.message}</p>
+          <p><span onClick={() => Profile(message.user)}>{message.user.username}</span> - {message.message}</p>
       </div>
     ));
   }
-  // state = {
-    
-  // }
 
   render() {
     return (
@@ -48,6 +29,7 @@ export default withTracker(() => {
   Meteor.subscribe('public.messages');
   Meteor.subscribe('public.users');
 
+  // get limit from Session : if Session variable does not exist set limit to 50
   let limit = Session.get('limit')
 
   if (limit == undefined) {
@@ -55,19 +37,28 @@ export default withTracker(() => {
     Session.set('limit', limit)
   }
 
-  let messages = Messages.find({}, {sort: {date: -1}, limit: limit});
-  let messagesArr = [];
-
+  // increase limit by 30 when user hits bottom of page
   window.onscroll = (event) => {
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
       Session.set('limit', limit + 30)
     }
   };
 
-  messages.forEach((document) => {
-    document.user = Meteor.users.findOne({_id: document.userId});
+  // get messages
+  let messages = Messages.find({}, {sort: {date: -1}, limit: limit});
+  let messagesArr = [];
 
-    messagesArr.push(document)
+  // add username to each message from userId
+  messages.forEach((message) => {
+    if (message.userId) {
+      message.user = Meteor.users.findOne({_id: message.userId});
+
+      if (!message.user) {
+        message.user = 'Deleted User'
+      }
+
+      messagesArr.push(message)
+    }
   })
 
   return {

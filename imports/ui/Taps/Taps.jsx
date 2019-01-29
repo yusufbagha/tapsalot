@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Meteor } from 'meteor/meteor'
 import TapCounter from './TapCounter/TapCounter';
 import TapButton from './TapButton/TapButton';
 import './Taps.scss';

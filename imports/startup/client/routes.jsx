@@ -2,11 +2,10 @@ import React from 'react';
 import { Router, Route, Switch } from 'react-router';
 import createBrowserHistory from 'history/createBrowserHistory';
 import ScrollToTop from './ScrollToTop'
-import NotFound from '../../ui/NotFound/NotFound';
+// import NotFound from '../../ui/NotFound/NotFound';
 import Home from '../../ui/Home/Home';
 import Chat from '../../ui/Chat/Chat';
-import Social from '../../ui/Social/Social';
-
+// import Social from '../../ui/Social/Social';
 
 const browserHistory = createBrowserHistory();
 
